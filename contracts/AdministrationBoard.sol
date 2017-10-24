@@ -201,11 +201,11 @@ contract AdministrationBoard is SafeMath {
     /// @notice only 5 additional owners can be added to owners list
     /// @param _owner new administration board owner
     function addOwner(address _owner)
-        public
-        onlyMainOwner
-        ownerDoesNotExist(_owner)
-        notNull(_owner)
-        validRequirement(owners.length + 1)
+    public
+    onlyMainOwner
+    ownerDoesNotExist(_owner)
+    notNull(_owner)
+    validRequirement(owners.length + 1)
     {
         isOwner[_owner] = true;
         owners.push(_owner);
@@ -219,11 +219,11 @@ contract AdministrationBoard is SafeMath {
     /// @notice Min three owners (one of them has to be main owner) has to vote for deletion to remove owner from list
     /// @param _owner owner for removal from administration board owners list
     function removeOwner(address _owner)
-        public
-        ownerExists(msg.sender)
-        notMainOwner(_owner)
-        notConfirmedAdminDeletion(_owner, msg.sender)
-        ownerExists(_owner)
+    public
+    ownerExists(msg.sender)
+    notMainOwner(_owner)
+    notConfirmedAdminDeletion(_owner, msg.sender)
+    ownerExists(_owner)
     {
         removalOwners[_owner] = true;
         ownerDeletionConfirmationsCount[_owner] += 1;
@@ -248,10 +248,10 @@ contract AdministrationBoard is SafeMath {
     /// @notice Same owner cannot confirm token release more than once
     /// @notice Voting is only allowed before token was already released
     function confirmTokenRelease()
-        public
-        tokensNotReleased
-        ownerExists(msg.sender)
-        notConfirmedTokenRelease(msg.sender)
+    public
+    tokensNotReleased
+    ownerExists(msg.sender)
+    notConfirmedTokenRelease(msg.sender)
     {
         confirmedTokenRelease[msg.sender] = true;
         confirmedTokenReleaseCount += 1;
@@ -266,24 +266,21 @@ contract AdministrationBoard is SafeMath {
     /// @notice Revoke vote for token release
     /// @notice Revocation can only be executed by owner who already voted for token release
     function revokeTokenReleaseConfirmation()
-        public
-        tokensNotReleased
-        ownerExists(msg.sender)
-        hasConfirmedTokenRelease(msg.sender)
+    public
+    tokensNotReleased
+    ownerExists(msg.sender)
+    hasConfirmedTokenRelease(msg.sender)
     {
         confirmedTokenRelease[msg.sender] = false;
         confirmedTokenReleaseCount -= 1;
-        bool confirmationDeleted = false;
-        for (uint i = 0; i < ownersConfirmedTokenRelease.length ; i++) {
-            if (ownersConfirmedTokenRelease[i] == msg.sender) {
-                confirmationDeleted = true;
-            }
 
-            if (confirmationDeleted) {
-                ownersConfirmedTokenRelease[i-1] = ownersConfirmedTokenRelease[i];
+        for (uint i = 0; i < ownersConfirmedTokenRelease.length - 1 ; i++) {
+            if (ownersConfirmedTokenRelease[i] == msg.sender) {
+                ownersConfirmedTokenRelease[i] = ownersConfirmedTokenRelease[ownersConfirmedTokenRelease.length - 1];
+                break;
             }
         }
-        delete ownersConfirmedTokenRelease[ownersConfirmedTokenRelease.length-1];
+        delete ownersConfirmedTokenRelease[ownersConfirmedTokenRelease.length - 1];
         ownersConfirmedTokenRelease.length--;
         RevokedTokenReleaseConfirmation(msg.sender, now);
     }
@@ -294,10 +291,10 @@ contract AdministrationBoard is SafeMath {
     /// @notice Same owner cannot vote for token owners reset more than once
     /// @notice Voting is only allowed before token was already released
     function resetTokenOwners()
-        public
-        tokensNotReleased
-        ownerExists(msg.sender)
-        notConfirmedTokenOwnerReset(msg.sender)
+    public
+    tokensNotReleased
+    ownerExists(msg.sender)
+    notConfirmedTokenOwnerReset(msg.sender)
     {
         confirmedTokenOwnersResetCount += 1;
         confirmedResetTokenOwners[msg.sender] = true;
@@ -313,20 +310,18 @@ contract AdministrationBoard is SafeMath {
     /// @notice Revoke vote for token owners list reset
     /// @notice Revocation can only be executed by owner who already voted for token owners list reset
     function revokeOwnersTokenReset()
-        public
-        tokensNotReleased
-        ownerExists(msg.sender)
-        confirmedTokenOwnerReset(msg.sender)
+    public
+    tokensNotReleased
+    ownerExists(msg.sender)
+    confirmedTokenOwnerReset(msg.sender)
     {
         confirmedResetTokenOwners[msg.sender] = false;
         confirmedTokenOwnersResetCount -= 1;
-        bool confirmationDeleted = false;
-        for (uint i = 0; i < ownersResetTokenOwners.length ; i++) {
+
+        for (uint i = 0; i < ownersResetTokenOwners.length - 1; i++) {
             if (ownersResetTokenOwners[i] == msg.sender) {
-                confirmationDeleted = true;
-            }
-            if (confirmationDeleted) {
-                ownersResetTokenOwners[i-1] = ownersResetTokenOwners[i];
+                ownersResetTokenOwners[i] = ownersResetTokenOwners[ownersResetTokenOwners.length - 1];
+                break;
             }
         }
         delete ownersResetTokenOwners[ownersResetTokenOwners.length-1];
@@ -338,13 +333,13 @@ contract AdministrationBoard is SafeMath {
     /// @notice Add token owners address array has to be same size token supply array
     /// @notice Only administration board owners can add token owners with token supply
     function addTokenOwners(
-        address[] _tokenOwners,
-        uint[] _tokenSupplies
+    address[] _tokenOwners,
+    uint[] _tokenSupplies
     )
-        public
-        tokensNotReleased
-        ownerExists(msg.sender)
-        returns(bool)
+    public
+    tokensNotReleased
+    ownerExists(msg.sender)
+    returns(bool)
     {
         assert(_tokenOwners.length > 0 && _tokenOwners.length == _tokenSupplies.length);
 
