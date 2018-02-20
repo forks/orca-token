@@ -8,8 +8,8 @@ contract AdministrationBoard is SafeMath {
     // Max size of additional owners that can be added to administration board
     uint constant public MAX_OWNER_COUNT = 5;
 
-    uint constant private MIN_CONFIRMATION_MINION_OWNER_COUNT = 2;
-    uint256 public constant CROWDFUND_PERCENT_OF_TOTAL = 75;
+    uint constant private MIN_CONFIRMATION_MINION_OWNER_COUNT = 17;
+    uint256 public constant CROWDFUND_PERCENT_OF_TOTAL = 60;
     uint256 private constant HUNDRED_PERCENT = 100;
 
     // Confirmations count that tokens can be released to investors
