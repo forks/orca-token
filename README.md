@@ -8,7 +8,7 @@ Basic information
 * type: ERC-233
 * symbol: ORCA
 * decimal: 18 
-* total: 1 000 000 000
+* total: TBA
 
 
 Instructions
