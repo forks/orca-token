@@ -11,7 +11,7 @@ contract OrcaToken is iERC23Token, StandardToken {
     string public name = "ORCA Token";
     string public symbol = "ORCA";
     uint8 public decimals = 18;
-    uint256 public totalSupply = 1000000000 * 1 ether;
+    uint256 public totalSupply = 100 * 1 ether; // 100 Tokens is used as example and will be changes to real amount before the sale
 
     address private administrationBoard;
 
